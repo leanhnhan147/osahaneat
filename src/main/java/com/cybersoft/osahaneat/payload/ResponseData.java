@@ -13,4 +13,5 @@ public class ResponseData {
     private int status = 200;
     private String description;
     private Object data;
+    private boolean isSuccess = true;
 }
