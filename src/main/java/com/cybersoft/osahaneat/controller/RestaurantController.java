@@ -2,6 +2,7 @@ package com.cybersoft.osahaneat.controller;
 
 import com.cybersoft.osahaneat.payload.ResponseData;
 import com.cybersoft.osahaneat.service.FileService;
+import com.cybersoft.osahaneat.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -16,10 +17,21 @@ public class RestaurantController {
     @Autowired
     FileService fileService;
 
+    @Autowired
+    RestaurantService restaurantService;
+
     @PostMapping("/add-file")
-    public ResponseEntity<?> createFileRestaurant(@RequestParam MultipartFile file) {
+    public ResponseEntity<?> createFileRestaurant(
+            @RequestParam MultipartFile file,
+            @RequestParam String title,
+            @RequestParam String subtitle,
+            @RequestParam String description,
+            @RequestParam boolean isFreeship,
+            @RequestParam String address,
+            @RequestParam String openDate) {
         ResponseData responseData = new ResponseData();
-        responseData.setData(fileService.saveFile(file));
+        boolean isSuccess = restaurantService.insertRestaurant(file, title, subtitle, description,  isFreeship, address, openDate);
+        responseData.setData(isSuccess);
         return new ResponseEntity<>(responseData, HttpStatus.OK);
     }
 
